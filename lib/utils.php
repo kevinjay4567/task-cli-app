@@ -1,10 +1,12 @@
 <?php
-
-function readJsonFile()
+function readJsonFile($path)
 {
-    if (!file_exists('db.json')) echo 'ERROR: No Se encuentra el archivo Json!' . PHP_EOL;
+    if (!file_exists($path)) {
+        touch($path);
+        file_put_contents($path, '[]');
+    }
 
-    $file = fopen('db.json', "r");
+    $file = fopen($path, "r");
     $json = '';
 
     if ($file) {
@@ -21,9 +23,9 @@ function readJsonFile()
 
 function writeJsonFile($task)
 {
-    if (!is_writable('db.json')) throw new Error('No Se encuentra el archivo Json!' . PHP_EOL);
+    if (!is_writable('db.json')) echo 'No Se encuentra el archivo Json!' . PHP_EOL;
 
-    if (!$file = file_get_contents('db.json')) throw new Error("Error de lectura de archivo Json!" . PHP_EOL);
+    if (!$file = file_get_contents('db.json')) echo "Error de lectura de archivo Json!" . PHP_EOL;
 
     $tasks = fromJson($file);
     $task = fromJson($task);
