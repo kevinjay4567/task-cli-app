@@ -4,12 +4,10 @@ require_once 'lib/task.model.php';
 
 class Action
 {
-    private $db;
-    private $data;
+    private array $data;
 
-    public function __construct($db)
+    public function __construct(private readonly Database $db)
     {
-        $this->db = $db;
         $this->data = json_decode($db->all());
     }
 
@@ -51,5 +49,24 @@ class Action
         $this->db->writeFile($file);
 
         echo 'Tarea eliminada correctamente' . PHP_EOL;
+    }
+
+    public function update($id, $description)
+    {
+        $tasks_result = array_map(fn($v) => $v->id === $id ? $this->updateTask($v, $description) : $v, $this->data);
+
+        $file = json_encode($tasks_result);
+
+        $this->db->writeFile($file);
+
+        echo 'Tarea actualizada correctamente' . PHP_EOL;
+    }
+
+    public function updateTask($task, $description)
+    {
+        $task->description = $description;
+        $task->updateAt = date('d-m-Y');
+
+        return $task;
     }
 }

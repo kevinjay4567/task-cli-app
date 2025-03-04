@@ -19,4 +19,5 @@ match ($argv[1]) {
     "list" => $action->list(),
     "add" => $action->add($argv[2]),
     "delete" => $action->delete($argv[2]),
+    "update" => $action->update($argv[2], $argv[3])
 };

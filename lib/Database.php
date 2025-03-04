@@ -1,14 +1,8 @@
 <?php
 
-class Database
+readonly class Database
 {
-
-    private $json_path;
-
-    function __construct($json_path)
-    {
-        $this->json_path = $json_path;
-    }
+    function __construct(private string $json_path) {}
 
     public function all()
     {
